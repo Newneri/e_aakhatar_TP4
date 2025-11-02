@@ -13,6 +13,8 @@
 #include "init.h"
 #include "structures.h"
 #include "saveData.h"
+#include "binary.h"
+#include "show.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -35,8 +37,6 @@ int main(int argc, char** argv)
     const char* filename = "data.txt";
     FILE* file;
     Prom prom;
-    int i;
-    int j;
     
     /* Ouverture du fichier de données en lecture */
     file = fopen(filename, "r");
@@ -62,48 +62,34 @@ int main(int argc, char** argv)
     printf("Loading grades and calculating averages...\n");
     get_all_grades(file, &prom);
 
-    /* Affichage des informations complètes de tous les étudiants */
-    printf("\n=== RESULTS ===\n\n");
-    for (i = 0; i < prom.int_nb_students; i++)
-    {
-        /* Affichage des informations de base de l'étudiant */
-        printf("Student: %s %s, Age: %d, ID: %d, Overall Average: %.2f\n",
-               prom.student_students[i].char_first_name,
-               prom.student_students[i].char_last_name,
-               prom.student_students[i].int_age,
-               prom.student_students[i].int_id,
-               prom.student_students[i].float_average);
-        
-        /* Affichage de toutes les matières et notes de l'étudiant */
-        for (j = 0; j < prom.student_students[i].int_nb_courses; j++)
-        {
-            Course* course = &prom.student_students[i].course_courses[j];
-            int k;
-            
-            /* Affichage du nom de la matière et de sa moyenne */
-            printf("  Course: %s, Coefficient: %.2f, Average: %.2f\n",
-                   course->char_course_name,
-                   course->float_coef,
-                   course->float_average);
-            
-            /* Affichage de toutes les notes de cette matière */
-            printf("    Grades: ");
-            for (k = 0; k < course->grades.int_nb_grades; k++)
-            {
-                printf("%.2f ", course->grades.tab_grades[k]);
-            }
-            printf("\n");
-        }
-        printf("\n");
-    }
-
     /* Fermeture du fichier */
     fclose(file);
+    
+    /* Affichage de la promotion */
+    printf("Displaying promotion information...\n");
+    show_prom(prom);
+
+    /* Enregistrement de la promotion dans le fichier binaire */
+    printf("Saving promotion to binary file...\n");
+    if (save_prom_binary("promotion.bin", &prom) != 0)
+    {
+        printf("Error: Failed to save promotion to binary file.\n");
+    } else {
+        printf("Promotion saved successfully to binary file: promotion.bin\n");
+    }
+    
 
     /* Libération de toute la mémoire allouée */
     printf("Freeing memory...\n");
     destroy_prom(&prom);
-    
+
+    /* Lecture de la promotion depuis le fichier binaire */
+    prom = load_prom_binary("promotion.bin");
+
+    /* Libération de toute la mémoire allouée */
+    printf("Freeing memory...\n");
+    destroy_prom(&prom);
+
     printf("Program completed successfully.\n");
     return (0);
 }
