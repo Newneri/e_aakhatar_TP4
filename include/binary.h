@@ -2,11 +2,11 @@
  * \file binary.h
  * \author Akhatar Abdelhamid <abdelhamid.akhatar@etu.cyu.fr>
  * \version 1.0
- * \date 2 novembre 2025
- * \brief Interface du module de sauvegarde/restauration binaire
+ * \date November 2, 2025
+ * \brief Interface for binary save/restore module
  * 
- * Ce fichier contient les prototypes des fonctions permettant de sauvegarder
- * et restaurer une promotion complète (étudiants, matières, notes) dans un fichier binaire.
+ * This file contains the prototypes of functions that allow saving
+ * and restoring a complete promotion (students, courses, grades) to a binary file.
  */
 
 #ifndef BINARY_H
@@ -16,31 +16,31 @@
 
 /*!
  * \fn int save_prom_binary(const char* str_filename, Prom* prom)
- * \brief Sauvegarde une promotion complète dans un fichier binaire
- * \param str_filename Nom du fichier binaire de destination
- * \param prom Pointeur vers la structure Prom à sauvegarder
- * \return 0 si succès, -1 en cas d'erreur
+ * \brief Saves a complete promotion to a binary file
+ * \param str_filename Name of the destination binary file
+ * \param prom Pointer to the Prom structure to save
+ * \return 0 on success, -1 on error
  * \pre str_filename != NULL
  * \pre prom != NULL
  * 
- * Cette fonction sauvegarde dans l'ordre :
- * - Le nombre d'étudiants
- * - Pour chaque étudiant : ID, nom, prénom, âge, nombre de cours, moyenne
- * - Pour chaque cours de chaque étudiant : nom, coefficient, moyenne, nombre de notes, notes
+ * This function saves in order:
+ * - The number of students
+ * - For each student: ID, last name, first name, age, number of courses, average
+ * - For each course of each student: name, coefficient, average, number of grades, grades
  */
 int save_prom_binary(const char* str_filename, Prom* prom);
 
 /*!
  * \fn Prom load_prom_binary(const char* str_filename)
- * \brief Restaure une promotion depuis un fichier binaire
- * \param str_filename Nom du fichier binaire source
- * \return Structure Prom restaurée, ou structure vide en cas d'erreur
+ * \brief Restores a promotion from a binary file
+ * \param str_filename Name of the source binary file
+ * \return Restored Prom structure, or empty structure on error
  * \pre str_filename != NULL
  * 
- * Cette fonction lit le fichier binaire et reconstruit en mémoire :
- * - Tous les étudiants avec leurs informations
- * - Tous les cours de chaque étudiant
- * - Toutes les notes de chaque cours
+ * This function reads the binary file and reconstructs in memory:
+ * - All students with their information
+ * - All courses of each student
+ * - All grades of each course
  */
 Prom load_prom_binary(const char* str_filename);
 

@@ -2,11 +2,11 @@
  * \file read.c
  * \author Akhatar Abdelhamid <abdelhamid.akhatar@etu.cyu.fr>
  * \version 1.0
- * \date 2 novembre 2025
- * \brief Module de lecture de fichier
+ * \date November 2, 2025
+ * \brief File reading module
  * 
- * Ce fichier contient l'implémentation des fonctions de lecture et parsing 
- * du fichier de données (étudiants, matières, notes).
+ * This file contains the implementation of functions for reading and parsing
+ * the data file (students, courses, grades).
  */
 
 #include "read.h"
@@ -19,9 +19,9 @@
 
 /*!
  * \fn char* read_line(FILE* file)
- * \brief Lit une ligne complète d'un fichier avec allocation dynamique
- * \param file Pointeur vers le fichier à lire
- * \return Chaîne de caractères contenant la ligne lue (à libérer par l'appelant)
+ * \brief Reads a complete line from a file with dynamic allocation
+ * \param file Pointer to the file to read
+ * \return String containing the read line (to be freed by the caller)
  */
 char* read_line(FILE* file) 
 {
@@ -34,19 +34,19 @@ char* read_line(FILE* file)
     size = 128;
     len = 0;
     
-    /* Allocation initiale du buffer */
+    /* Initial buffer allocation */
     buffer = malloc(size);
     if (!buffer) 
     {
         return (NULL);
     }
 
-    /* Lecture caractère par caractère jusqu'à la fin de ligne */
+    /* Read character by character until end of line */
     while ((c = fgetc(file)) != EOF && c != '\n') 
     {
         buffer[len++] = (char)c;
         
-        /* Réallocation si le buffer est trop petit */
+        /* Reallocation if buffer is too small */
         if (len >= size) 
         {
             size *= 2;
@@ -60,14 +60,14 @@ char* read_line(FILE* file)
         }
     }
     
-    /* Si aucun caractère n'a été lu et EOF atteint */
+    /* If no character was read and EOF reached */
     if (len == 0 && c == EOF) 
     {
         free(buffer);
         return (NULL);
     }
     
-    /* Ajout du terminateur de chaîne */
+    /* Add string terminator */
     buffer[len] = '\0';
     
     return (buffer);
@@ -76,10 +76,10 @@ char* read_line(FILE* file)
 
 /*!
  * \fn char* get_to_type(FILE* file, char* type)
- * \brief Se positionne dans le fichier à la section spécifiée
- * \param file Pointeur vers le fichier
- * \param type Nom de la section à rechercher (ex: "ETUDIANTS", "MATIERES", "NOTES")
- * \return Première ligne de données après la section trouvée
+ * \brief Positions in the file at the specified section
+ * \param file Pointer to the file
+ * \param type Name of the section to search for (e.g., "ETUDIANTS", "MATIERES", "NOTES")
+ * \return First data line after the found section
  */
 char* get_to_type(FILE* file, char* type)
 {
@@ -89,29 +89,29 @@ char* get_to_type(FILE* file, char* type)
     line = NULL;
     found = 0;
 
-    /* Recherche de la section dans le fichier */
+    /* Search for the section in the file */
     while ((line = read_line(file)) != NULL) 
     {
-        /* Comparaison avec le type recherché */
+        /* Comparison with the searched type */
         if (strcmp(line, type) == 0) 
         {
             found = 1;
             free(line);
             
-            /* Saut de la ligne d'en-tête (ex: "numero;prenom;nom;age") */
+            /* Skip the header line (e.g., "numero;prenom;nom;age") */
             line = read_line(file);
             break;
         }
         free(line);
     }
     
-    /* Affichage si la section n'a pas été trouvée */
+    /* Display if the section was not found */
     if (!found) 
     {
         printf("%s not found in file\n", type);
     }
     
-    /* Lecture de la première ligne de données */
+    /* Read the first data line */
     line = read_line(file);
     
     return (line);
@@ -119,27 +119,27 @@ char* get_to_type(FILE* file, char* type)
 
 /*!
  * \fn Course parse_course_line(const char* line)
- * \brief Parse une ligne du fichier pour créer une structure Course
- * \param line Ligne au format "nom;coefficient"
- * \return Structure Course initialisée
+ * \brief Parses a file line to create a Course structure
+ * \param line Line in format "name;coefficient"
+ * \return Initialized Course structure
  */
 Course parse_course_line(const char* line) 
 {
     char name[128];
     float coef;
     
-    /* Extraction du nom et du coefficient depuis la ligne */
+    /* Extract name and coefficient from the line */
     sscanf(line, "%[^;];%f", name, &coef);
     
-    /* Création et retour de la structure Course */
+    /* Create and return the Course structure */
     return (create_course(name, coef, 0));
 }
 
 /*!
  * \fn Student parse_student_line(const char* line)
- * \brief Parse une ligne du fichier pour créer une structure Student
- * \param line Ligne au format "id;prenom;nom;age"
- * \return Structure Student initialisée
+ * \brief Parses a file line to create a Student structure
+ * \param line Line in format "id;firstname;lastname;age"
+ * \return Initialized Student structure
  */
 Student parse_student_line(const char* line) 
 {
@@ -148,11 +148,9 @@ Student parse_student_line(const char* line)
     char first_name[128];
     char last_name[128];
     
-    /* Extraction des données depuis la ligne */
+    /* Extract data from the line */
     sscanf(line, "%d;%127[^;];%127[^;];%d", &id, first_name, last_name, &age);
     
-    /* Création et retour de la structure Student */
+    /* Create and return the Student structure */
     return (create_student(id, last_name, first_name, age, 0));
 }
-
-    

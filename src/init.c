@@ -2,11 +2,11 @@
  * \file init.c
  * \author Akhatar Abdelhamid <abdelhamid.akhatar@etu.cyu.fr>
  * \version 1.0
- * \date 2 novembre 2025
- * \brief Module de construction et destruction des structures de données
+ * \date November 2, 2025
+ * \brief Module for constructing and destroying data structures
  * 
- * Ce fichier contient l'implémentation des fonctions de création (constructeurs) 
- * et de destruction (destructeurs) pour les structures Grades, Course, Student et Prom.
+ * This file contains the implementation of creation (constructors) 
+ * and destruction (destructors) functions for the Grades, Course, Student and Prom structures.
  */
 
 #include "init.h"
@@ -14,25 +14,25 @@
 
 /*!
  * \fn Grades create_grades(int int_nb_grades)
- * \brief Crée une structure Grades avec allocation dynamique
- * \param int_nb_grades Nombre de notes à allouer
- * \return Structure Grades initialisée avec les notes à 0.0
+ * \brief Creates a Grades structure with dynamic allocation
+ * \param int_nb_grades Number of grades to allocate
+ * \return Initialized Grades structure with grades set to 0.0
  */
 Grades create_grades(int int_nb_grades) 
 {
     Grades grades;
     int i;
     
-    /* Initialisation du nombre de notes */
+    /* Initialize the number of grades */
     grades.int_nb_grades = int_nb_grades;
     
-    /* Allocation dynamique du tableau de notes */
+    /* Dynamic allocation of the grades array */
     grades.tab_grades = (float*)malloc(int_nb_grades * sizeof(float));
     
-    /* Vérification de la réussite de l'allocation */
+    /* Check if allocation was successful */
     if (grades.tab_grades != NULL) 
     {
-        /* Initialisation de toutes les notes à 0.0 */
+        /* Initialize all grades to 0.0 */
         for (i = 0; i < int_nb_grades; i++) 
         {
             grades.tab_grades[i] = 0.0f;
@@ -45,26 +45,26 @@ Grades create_grades(int int_nb_grades)
 
 /*!
  * \fn Course create_course(const char* char_course_name, float float_coef, int int_nb_grades)
- * \brief Crée une structure Course (matière) avec allocation dynamique
- * \param char_course_name Nom de la matière
- * \param float_coef Coefficient de la matière
- * \param int_nb_grades Nombre de notes à allouer
- * \return Structure Course initialisée
+ * \brief Creates a Course structure with dynamic allocation
+ * \param char_course_name Name of the course
+ * \param float_coef Coefficient of the course
+ * \param int_nb_grades Number of grades to allocate
+ * \return Initialized Course structure
  */
 Course create_course(const char* char_course_name, float float_coef, int int_nb_grades) 
 {
     Course course;
     
-    /* Duplication du nom de la matière (allocation dynamique + copie) */
+    /* Duplicate the course name (dynamic allocation + copy) */
     course.char_course_name = strdup(char_course_name);
     
-    /* Initialisation du coefficient */
+    /* Initialize the coefficient */
     course.float_coef = float_coef;
     
-    /* Création de la structure Grades associée */
+    /* Create the associated Grades structure */
     course.grades = create_grades(int_nb_grades);
     
-    /* Initialisation de la moyenne à 0 */
+    /* Initialize the average to 0 */
     course.float_average = 0.0f;
     
     return (course);
@@ -72,37 +72,37 @@ Course create_course(const char* char_course_name, float float_coef, int int_nb_
 
 /*!
  * \fn Student create_student(int int_id, const char* char_last_name, const char* char_first_name, int int_age, int int_nb_courses)
- * \brief Crée une structure Student (étudiant) avec allocation dynamique
- * \param int_id Identifiant unique de l'étudiant
- * \param char_last_name Nom de famille de l'étudiant
- * \param char_first_name Prénom de l'étudiant
- * \param int_age Age de l'étudiant
- * \param int_nb_courses Nombre de matières à allouer
- * \return Structure Student initialisée
+ * \brief Creates a Student structure with dynamic allocation
+ * \param int_id Unique identifier of the student
+ * \param char_last_name Last name of the student
+ * \param char_first_name First name of the student
+ * \param int_age Age of the student
+ * \param int_nb_courses Number of courses to allocate
+ * \return Initialized Student structure
  */
 Student create_student(int int_id, const char* char_last_name, const char* char_first_name, int int_age, int int_nb_courses) 
 {
     Student student;
     
-    /* Initialisation de l'identifiant */
+    /* Initialize the identifier */
     student.int_id = int_id;
     
-    /* Duplication du nom de famille (allocation dynamique + copie) */
+    /* Duplicate the last name (dynamic allocation + copy) */
     student.char_last_name = strdup(char_last_name);
     
-    /* Duplication du prénom (allocation dynamique + copie) */
+    /* Duplicate the first name (dynamic allocation + copy) */
     student.char_first_name = strdup(char_first_name);
     
-    /* Initialisation de l'âge */
+    /* Initialize the age */
     student.int_age = int_age;
     
-    /* Initialisation du nombre de matières */
+    /* Initialize the number of courses */
     student.int_nb_courses = int_nb_courses;
     
-    /* Allocation dynamique du tableau de matières */
+    /* Dynamic allocation of the courses array */
     student.course_courses = (Course*)malloc(int_nb_courses * sizeof(Course));
     
-    /* Initialisation de la moyenne générale à 0 */
+    /* Initialize the overall average to 0 */
     student.float_average = 0.0f;
     
     return (student);
@@ -110,18 +110,18 @@ Student create_student(int int_id, const char* char_last_name, const char* char_
 
 /*!
  * \fn Prom create_prom(int int_nb_students)
- * \brief Crée une structure Prom (promotion) avec allocation dynamique
- * \param int_nb_students Nombre d'étudiants à allouer
- * \return Structure Prom initialisée
+ * \brief Creates a Prom (cohort) structure with dynamic allocation
+ * \param int_nb_students Number of students to allocate
+ * \return Initialized Prom structure
  */
 Prom create_prom(int int_nb_students) 
 {
     Prom prom;
     
-    /* Initialisation du nombre d'étudiants */
+    /* Initialize the number of students */
     prom.int_nb_students = int_nb_students;
     
-    /* Allocation dynamique du tableau d'étudiants */
+    /* Dynamic allocation of the students array */
     prom.student_students = (Student*)malloc(int_nb_students * sizeof(Student));
     
     return (prom);
@@ -130,93 +130,93 @@ Prom create_prom(int int_nb_students)
 
 /*!
  * \fn void destroy_grades(Grades* grades)
- * \brief Libère la mémoire allouée pour une structure Grades
- * \param grades Pointeur vers la structure Grades à détruire
+ * \brief Frees the memory allocated for a Grades structure
+ * \param grades Pointer to the Grades structure to destroy
  */
 void destroy_grades(Grades* grades) 
 {
-    /* Vérification que le tableau de notes existe */
+    /* Check if the grades array exists */
     if (grades->tab_grades != NULL) 
     {
-        /* Libération de la mémoire du tableau */
+        /* Free the array memory */
         free(grades->tab_grades);
         
-        /* Mise à NULL du pointeur pour éviter les double free */
+        /* Set pointer to NULL to avoid double free */
         grades->tab_grades = NULL;
     }
     
-    /* Réinitialisation du nombre de notes */
+    /* Reset the number of grades */
     grades->int_nb_grades = 0;
 }
 
 /*!
  * \fn void destroy_course(Course* course)
- * \brief Libère la mémoire allouée pour une structure Course
- * \param course Pointeur vers la structure Course à détruire
+ * \brief Frees the memory allocated for a Course structure
+ * \param course Pointer to the Course structure to destroy
  */
 void destroy_course(Course* course) 
 {
-    /* Vérification que le nom de la matière existe */
+    /* Check if the course name exists */
     if (course->char_course_name != NULL) 
     {
-        /* Libération de la mémoire du nom */
+        /* Free the name memory */
         free(course->char_course_name);
         
-        /* Mise à NULL du pointeur pour éviter les double free */
+        /* Set pointer to NULL to avoid double free */
         course->char_course_name = NULL;
     }
     
-    /* Destruction de la structure Grades associée */
+    /* Destroy the associated Grades structure */
     destroy_grades(&course->grades);
     
-    /* Réinitialisation du coefficient */
+    /* Reset the coefficient */
     course->float_coef = 0.0f;
     
-    /* Réinitialisation de la moyenne */
+    /* Reset the average */
     course->float_average = 0.0f;
 }
 
 
 /*!
  * \fn void destroy_student(Student* student)
- * \brief Libère la mémoire allouée pour une structure Student
- * \param student Pointeur vers la structure Student à détruire
+ * \brief Frees the memory allocated for a Student structure
+ * \param student Pointer to the Student structure to destroy
  */
 void destroy_student(Student* student) 
 {
     int i;
     
-    /* Vérification et libération du nom de famille */
+    /* Check and free the last name */
     if (student->char_last_name != NULL) 
     {
         free(student->char_last_name);
         student->char_last_name = NULL;
     }
     
-    /* Vérification et libération du prénom */
+    /* Check and free the first name */
     if (student->char_first_name != NULL) 
     {
         free(student->char_first_name);
         student->char_first_name = NULL;
     }
     
-    /* Vérification que le tableau de matières existe */
+    /* Check if the courses array exists */
     if (student->course_courses != NULL) 
     {
-        /* Destruction de chaque matière du tableau */
+        /* Destroy each course in the array */
         for (i = 0; i < student->int_nb_courses; i++) 
         {
             destroy_course(&student->course_courses[i]);
         }
         
-        /* Libération du tableau de matières */
+        /* Free the courses array */
         free(student->course_courses);
         
-        /* Mise à NULL du pointeur pour éviter les double free */
+        /* Set pointer to NULL to avoid double free */
         student->course_courses = NULL;
     }
     
-    /* Réinitialisation de tous les champs numériques */
+    /* Reset all numeric fields */
     student->int_id = 0;
     student->int_age = 0;
     student->int_nb_courses = 0;
@@ -225,30 +225,30 @@ void destroy_student(Student* student)
 
 /*!
  * \fn void destroy_prom(Prom* prom)
- * \brief Libère la mémoire allouée pour une structure Prom
- * \param prom Pointeur vers la structure Prom à détruire
+ * \brief Frees the memory allocated for a Prom structure
+ * \param prom Pointer to the Prom structure to destroy
  */
 void destroy_prom(Prom* prom) 
 {
     int i;
     
-    /* Vérification que le tableau d'étudiants existe */
+    /* Check if the students array exists */
     if (prom->student_students != NULL) 
     {
-        /* Destruction de chaque étudiant du tableau */
+        /* Destroy each student in the array */
         for (i = 0; i < prom->int_nb_students; i++) 
         {
             destroy_student(&prom->student_students[i]);
         }
         
-        /* Libération du tableau d'étudiants */
+        /* Free the students array */
         free(prom->student_students);
         
-        /* Mise à NULL du pointeur pour éviter les double free */
+        /* Set pointer to NULL to avoid double free */
         prom->student_students = NULL;
     }
     
-    /* Réinitialisation du nombre d'étudiants */
+    /* Reset the number of students */
     prom->int_nb_students = 0;
 }
 

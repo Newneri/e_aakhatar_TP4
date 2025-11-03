@@ -2,11 +2,11 @@
  * \file update.h
  * \author Akhatar Abdelhamid <abdelhamid.akhatar@etu.cyu.fr>
  * \version 1.0
- * \date 2 novembre 2025
- * \brief Interface du module de mise à jour des moyennes
+ * \date November 2, 2025
+ * \brief Interface for the average update module
  * 
- * Ce fichier contient les prototypes des fonctions permettant de calculer
- * et mettre à jour les moyennes des matières et des étudiants.
+ * This file contains the prototypes of functions for calculating
+ * and updating course and student averages.
  */
 
 #include <stdlib.h>
@@ -19,16 +19,16 @@
 
 /*!
  * \fn void update_student_average(Prom* prom)
- * \brief Met à jour les moyennes de tous les étudiants d'une promotion
- * \param prom Pointeur vers la structure Prom contenant les étudiants
+ * \brief Updates the averages of all students in a cohort
+ * \param prom Pointer to the Prom structure containing the students
  * \pre prom != NULL
  */
 void update_student_average(Prom* prom);
 
 /*!
  * \fn void update_course_average(Prom* prom)
- * \brief Met à jour les moyennes de toutes les matières de tous les étudiants
- * \param prom Pointeur vers la structure Prom contenant les étudiants
+ * \brief Updates the averages of all courses for all students
+ * \param prom Pointer to the Prom structure containing the students
  * \pre prom != NULL
  */
 void update_course_average(Prom* prom);

@@ -2,11 +2,11 @@
  * \file structures.h
  * \author Akhatar Abdelhamid <abdelhamid.akhatar@etu.cyu.fr>
  * \version 1.0
- * \date 2 novembre 2025
- * \brief Définitions des structures de données du projet
+ * \date November 2, 2025
+ * \brief Data structure definitions for the project
  * 
- * Ce fichier contient les définitions des structures Grades, Course, Student et Prom
- * utilisées pour la gestion d'une promotion d'étudiants avec leurs matières et notes.
+ * This file contains the definitions of the Grades, Course, Student and Prom
+ * structures used for managing a student cohort with their courses and grades.
  */
 
 #ifndef STRUCTURES_H
@@ -14,50 +14,50 @@
 
 /*!
  * \struct Grades
- * \brief Structure représentant un ensemble de notes
+ * \brief Structure representing a set of grades
  */
 typedef struct 
 {
-    float* tab_grades;        /*!< Tableau dynamique de notes */
-    int int_nb_grades;        /*!< Nombre de notes dans le tableau */
+    float* tab_grades;        /*!< Dynamic array of grades */
+    int int_nb_grades;        /*!< Number of grades in the array */
 } Grades;
 
 /*!
  * \struct Course
- * \brief Structure représentant une matière (cours)
+ * \brief Structure representing a course (subject)
  */
 typedef struct 
 {
-    Grades grades;            /*!< Notes de la matière */
-    char *char_course_name;   /*!< Nom de la matière */
-    float float_coef;         /*!< Coefficient de la matière */
-    float float_average;      /*!< Moyenne de la matière */
-    int int_nb_grades;        /*!< Nombre de notes */
+    Grades grades;            /*!< Grades for the course */
+    char *char_course_name;   /*!< Name of the course */
+    float float_coef;         /*!< Coefficient of the course */
+    float float_average;      /*!< Average grade for the course */
+    int int_nb_grades;        /*!< Number of grades */
 } Course;
 
 /*!
  * \struct Student
- * \brief Structure représentant un étudiant
+ * \brief Structure representing a student
  */
 typedef struct 
 {
-    int int_id;               /*!< Identifiant unique de l'étudiant */
-    char *char_last_name;     /*!< Nom de famille */
-    char *char_first_name;    /*!< Prénom */
-    int int_age;              /*!< Age de l'étudiant */
-    int int_nb_courses;       /*!< Nombre de matières suivies */
-    Course *course_courses;   /*!< Tableau dynamique de matières */
-    float float_average;      /*!< Moyenne générale de l'étudiant */
+    int int_id;               /*!< Unique identifier of the student */
+    char *char_last_name;     /*!< Last name */
+    char *char_first_name;    /*!< First name */
+    int int_age;              /*!< Age of the student */
+    int int_nb_courses;       /*!< Number of courses taken */
+    Course *course_courses;   /*!< Dynamic array of courses */
+    float float_average;      /*!< Overall average of the student */
 } Student;
 
 /*!
  * \struct Prom
- * \brief Structure représentant une promotion d'étudiants
+ * \brief Structure representing a student cohort
  */
 typedef struct 
 {
-    int int_nb_students;      /*!< Nombre d'étudiants dans la promotion */
-    Student *student_students; /*!< Tableau dynamique d'étudiants */
+    int int_nb_students;      /*!< Number of students in the cohort */
+    Student *student_students; /*!< Dynamic array of students */
 } Prom;
 
 

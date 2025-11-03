@@ -2,11 +2,11 @@
  * \file main.c
  * \author Akhatar Abdelhamid <abdelhamid.akhatar@etu.cyu.fr>
  * \version 1.0
- * \date 2 novembre 2025
- * \brief Programme principal de gestion des étudiants et leurs notes
+ * \date November 2, 2025
+ * \brief Main program for managing students and their grades
  * 
- * Ce fichier contient la fonction main qui charge les données depuis un fichier,
- * affiche les informations des étudiants avec leurs moyennes, et libère la mémoire.
+ * This file contains the main function that loads data from a file,
+ * displays student information with their averages, and frees memory.
  */
 
 #include "read.h"
@@ -15,23 +15,25 @@
 #include "saveData.h"
 #include "binary.h"
 #include "show.h"
-#include "tri.h"
+#include "sorting.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 /*!
  * \fn int main(int argc, char** argv)
- * \brief Fonction principale du programme
- * \param argc Nombre d'arguments de la ligne de commande
- * \param argv Tableau des arguments de la ligne de commande
- * \return 0 si succès, 1 en cas d'erreur
+ * \brief Main function of the program
+ * \param argc Number of command line arguments
+ * \param argv Array of command line arguments
+ * \return 0 if success, 1 on error
  * 
- * Cette fonction:
- * - Ouvre le fichier de données
- * - Charge les étudiants, matières et notes
- * - Affiche les informations complètes
- * - Libère toute la mémoire allouée
+ * This function:
+ * - Opens the data file
+ * - Loads students, courses and grades
+ * - Displays complete information
+ * - Sorts students by average and by course
+ * - Saves the promotion to a binary file
+ * - Frees all allocated memory
  */
 int main(int argc, char** argv) 
 {
@@ -39,7 +41,7 @@ int main(int argc, char** argv)
     FILE* file;
     Prom prom;
     
-    /* Ouverture du fichier de données en lecture */
+    /* Opening the data file for reading */
     file = fopen(filename, "r");
     if (file == NULL) 
     {
@@ -47,42 +49,43 @@ int main(int argc, char** argv)
         return (1);
     }
 
-    /* Initialisation de la structure Prom */
+    /* Initializing the Prom structure */
     printf("Initializing promotion...\n");
     prom = create_prom(0);
 
-    /* Chargement de tous les étudiants depuis le fichier */
+    /* Loading all students from the file */
     printf("Loading students...\n");
     get_all_students(file, &prom);
     
-    /* Chargement de toutes les matières pour chaque étudiant */
+    /* Loading all courses for each student */
     printf("Loading courses...\n");
     get_all_courses(file, &prom);
 
-    /* Chargement de toutes les notes et calcul des moyennes */
+    /* Loading all grades and calculating averages */
     printf("Loading grades and calculating averages...\n");
     get_all_grades(file, &prom);
 
-    /* Fermeture du fichier */
+    /* Closing the file */
     fclose(file);
     
-    /* Tri des étudiants par moyenne décroissante */
+    /* Sorting students by descending average */
     printf("Sorting students by average...\n");
-    trier_etudiants_par_moyenne(&prom);
+    sort_students_by_average(&prom);
 
-    /* Affichage de la promotion */
+    /* Displaying the promotion */
     printf("Displaying promotion information...\n");
     show_prom(prom);
-    
-    /* Affichage des 3 meilleurs étudiants en Mathématiques */
-    trier_etudiants_par_matiere(&prom, "Mathematiques");
 
-    /* Affichage des top 10 étudiants */    
-    printf("Displaying top 10 students by average...\n");
+    /* Displaying the top 10 students */    
+    printf("\n\nDisplaying top 10 students by average...\n");
     show_best(prom.student_students, 10);
 
-    /* Enregistrement de la promotion dans le fichier binaire */
-    printf("Saving promotion to binary file...\n");
+    /* Sorting and displaying top 3 students in "Mathematics" */
+    printf("\n\nSorting and displaying top 3 students in Mathematics...\n");
+    sort_students_from_course(&prom, "Mathematiques");
+
+    /* Saving the promotion to the binary file */
+    printf("\n\nSaving promotion to binary file...\n");
     if (save_prom_binary("promotion.bin", &prom) != 0)
     {
         printf("Error: Failed to save promotion to binary file.\n");
@@ -90,10 +93,16 @@ int main(int argc, char** argv)
         printf("Promotion saved successfully to binary file: promotion.bin\n");
     }
 
-    /* Libération de toute la mémoire allouée */
+    /* Freeing all allocated memory */
     printf("Freeing memory...\n");
     destroy_prom(&prom);
 
-    printf("Program completed successfully.\n");
+    /* Loading the promotion back from the binary file for verification */
+    printf("Loading promotion from binary file for verification...\n");
+    prom = load_prom_binary("promotion.bin");
+
+    /* Displaying the loaded promotion */
+    printf("Displaying some of the promotion information...\n");
+    show_best(prom.student_students, 3);
     return (0);
 }

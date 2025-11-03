@@ -2,11 +2,11 @@
  * \file binary.c
  * \author Akhatar Abdelhamid <abdelhamid.akhatar@etu.cyu.fr>
  * \version 1.0
- * \date 2 novembre 2025
- * \brief Module de sauvegarde/restauration binaire des promotions
+ * \date November 2, 2025
+ * \brief Binary save/restore module for student cohorts
  * 
- * Ce fichier contient l'implémentation des fonctions permettant de sauvegarder
- * et restaurer une promotion complète dans un fichier binaire.
+ * This file contains the implementation of functions allowing to save
+ * and restore a complete cohort in a binary file.
  */
 
 #include "binary.h"
@@ -17,10 +17,10 @@
 
 /*!
  * \fn int save_prom_binary(const char* str_filename, Prom* prom)
- * \brief Sauvegarde une promotion complète dans un fichier binaire
- * \param str_filename Nom du fichier binaire de destination
- * \param prom Pointeur vers la structure Prom à sauvegarder
- * \return 0 si succès, -1 en cas d'erreur
+ * \brief Saves a complete cohort to a binary file
+ * \param str_filename Name of the destination binary file
+ * \param prom Pointer to the Prom structure to save
+ * \return 0 if success, -1 in case of error
  */
 int save_prom_binary(const char* str_filename, Prom* prom)
 {
@@ -29,61 +29,61 @@ int save_prom_binary(const char* str_filename, Prom* prom)
     int j;
     int str_len;
     
-    /* Vérification des paramètres */
+    /* Parameter verification */
     if (str_filename == NULL || prom == NULL)
     {
         return (-1);
     }
     
-    /* Ouverture du fichier en mode écriture binaire */
+    /* Open file in binary write mode */
     file = fopen(str_filename, "wb");
     if (file == NULL)
     {
         return (-1);
     }
     
-    /* Écriture du nombre d'étudiants dans la promotion */
+    /* Write the number of students in the cohort */
     fwrite(&prom->int_nb_students, sizeof(int), 1, file);
     
-    /* Parcours de tous les étudiants */
+    /* Loop through all students */
     for (i = 0; i < prom->int_nb_students; i++)
     {
         Student* student = &prom->student_students[i];
         
-        /* Écriture des informations de base de l'étudiant */
+        /* Write student's basic information */
         fwrite(&student->int_id, sizeof(int), 1, file);
         fwrite(&student->int_age, sizeof(int), 1, file);
         fwrite(&student->float_average, sizeof(float), 1, file);
         fwrite(&student->int_nb_courses, sizeof(int), 1, file);
         
-        /* Écriture du nom de famille (longueur + chaîne) */
+        /* Write last name (length + string) */
         str_len = strlen(student->char_last_name) + 1;
         fwrite(&str_len, sizeof(int), 1, file);
         fwrite(student->char_last_name, sizeof(char), str_len, file);
         
-        /* Écriture du prénom (longueur + chaîne) */
+        /* Write first name (length + string) */
         str_len = strlen(student->char_first_name) + 1;
         fwrite(&str_len, sizeof(int), 1, file);
         fwrite(student->char_first_name, sizeof(char), str_len, file);
         
-        /* Parcours de tous les cours de l'étudiant */
+        /* Loop through all student's courses */
         for (j = 0; j < student->int_nb_courses; j++)
         {
             Course* course = &student->course_courses[j];
             
-            /* Écriture des informations du cours */
+            /* Write course information */
             fwrite(&course->float_coef, sizeof(float), 1, file);
             fwrite(&course->float_average, sizeof(float), 1, file);
             
-            /* Écriture du nom du cours (longueur + chaîne) */
+            /* Write course name (length + string) */
             str_len = strlen(course->char_course_name) + 1;
             fwrite(&str_len, sizeof(int), 1, file);
             fwrite(course->char_course_name, sizeof(char), str_len, file);
             
-            /* Écriture du nombre de notes */
+            /* Write number of grades */
             fwrite(&course->grades.int_nb_grades, sizeof(int), 1, file);
             
-            /* Écriture de toutes les notes du cours */
+            /* Write all course grades */
             if (course->grades.int_nb_grades > 0)
             {
                 fwrite(course->grades.tab_grades, sizeof(float), 
@@ -92,7 +92,7 @@ int save_prom_binary(const char* str_filename, Prom* prom)
         }
     }
     
-    /* Fermeture du fichier */
+    /* Close file */
     fclose(file);
     
     return (0);
@@ -100,9 +100,9 @@ int save_prom_binary(const char* str_filename, Prom* prom)
 
 /*!
  * \fn Prom load_prom_binary(const char* str_filename)
- * \brief Restaure une promotion depuis un fichier binaire
- * \param str_filename Nom du fichier binaire source
- * \return Structure Prom restaurée, ou structure vide en cas d'erreur
+ * \brief Restores a cohort from a binary file
+ * \param str_filename Name of the source binary file
+ * \return Restored Prom structure, or empty structure in case of error
  */
 Prom load_prom_binary(const char* str_filename)
 {
@@ -113,7 +113,7 @@ Prom load_prom_binary(const char* str_filename)
     int str_len;
     char buffer[256];
     
-    /* Vérification du paramètre */
+    /* Parameter verification */
     if (str_filename == NULL)
     {
         prom.int_nb_students = 0;
@@ -121,7 +121,7 @@ Prom load_prom_binary(const char* str_filename)
         return (prom);
     }
     
-    /* Ouverture du fichier en mode lecture binaire */
+    /* Open file in binary read mode */
     file = fopen(str_filename, "rb");
     if (file == NULL)
     {
@@ -131,10 +131,10 @@ Prom load_prom_binary(const char* str_filename)
         return (prom);
     }
     
-    /* Lecture du nombre d'étudiants */
+    /* Read number of students */
     fread(&prom.int_nb_students, sizeof(int), 1, file);
     
-    /* Allocation du tableau d'étudiants */
+    /* Allocate student array */
     prom.student_students = (Student*)malloc(prom.int_nb_students * sizeof(Student));
     if (prom.student_students == NULL)
     {
@@ -143,48 +143,48 @@ Prom load_prom_binary(const char* str_filename)
         return (prom);
     }
     
-    /* Parcours de tous les étudiants */
+    /* Loop through all students */
     for (i = 0; i < prom.int_nb_students; i++)
     {
         Student* student = &prom.student_students[i];
         
-        /* Lecture des informations de base de l'étudiant */
+        /* Read student's basic information */
         fread(&student->int_id, sizeof(int), 1, file);
         fread(&student->int_age, sizeof(int), 1, file);
         fread(&student->float_average, sizeof(float), 1, file);
         fread(&student->int_nb_courses, sizeof(int), 1, file);
         
-        /* Lecture du nom de famille */
+        /* Read last name */
         fread(&str_len, sizeof(int), 1, file);
         fread(buffer, sizeof(char), str_len, file);
         student->char_last_name = strdup(buffer);
         
-        /* Lecture du prénom */
+        /* Read first name */
         fread(&str_len, sizeof(int), 1, file);
         fread(buffer, sizeof(char), str_len, file);
         student->char_first_name = strdup(buffer);
         
-        /* Allocation du tableau de cours */
+        /* Allocate course array */
         student->course_courses = (Course*)malloc(student->int_nb_courses * sizeof(Course));
         
-        /* Parcours de tous les cours de l'étudiant */
+        /* Loop through all student's courses */
         for (j = 0; j < student->int_nb_courses; j++)
         {
             Course* course = &student->course_courses[j];
             
-            /* Lecture des informations du cours */
+            /* Read course information */
             fread(&course->float_coef, sizeof(float), 1, file);
             fread(&course->float_average, sizeof(float), 1, file);
             
-            /* Lecture du nom du cours */
+            /* Read course name */
             fread(&str_len, sizeof(int), 1, file);
             fread(buffer, sizeof(char), str_len, file);
             course->char_course_name = strdup(buffer);
             
-            /* Lecture du nombre de notes */
+            /* Read number of grades */
             fread(&course->grades.int_nb_grades, sizeof(int), 1, file);
             
-            /* Allocation et lecture des notes */
+            /* Allocate and read grades */
             if (course->grades.int_nb_grades > 0)
             {
                 course->grades.tab_grades = (float*)malloc(course->grades.int_nb_grades * sizeof(float));
@@ -197,7 +197,7 @@ Prom load_prom_binary(const char* str_filename)
         }
     }
     
-    /* Fermeture du fichier */
+    /* Close file */
     fclose(file);
     
     printf("Promotion loaded successfully from binary file: %s\n", str_filename);

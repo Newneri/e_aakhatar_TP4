@@ -2,11 +2,11 @@
  * \file show.c
  * \author Akhatar Abdelhamid <abdelhamid.akhatar@etu.cyu.fr>
  * \version 1.0
- * \date 2 novembre 2025
- * \brief Module d'affichage des structures de données
+ * \date November 2, 2025
+ * \brief Data structure display module
  * 
- * Ce fichier contient l'implémentation des fonctions permettant d'afficher
- * de manière formatée les structures Grades, Course, Student et Prom.
+ * This file contains the implementation of functions allowing to display
+ * in a formatted way the Grades, Course, Student and Prom structures.
  */
 
 #include <stdio.h>
@@ -16,29 +16,29 @@
 
 /*!
  * \fn void show_grades(Grades grades)
- * \brief Affiche toutes les notes d'une structure Grades
- * \param grades Structure Grades à afficher
+ * \brief Displays all grades from a Grades structure
+ * \param grades Grades structure to display
  */
 void show_grades(Grades grades)
 {
     int i;
     
-    /* Vérification si des notes existent */
+    /* Check if grades exist */
     if (grades.int_nb_grades == 0)
     {
         printf("      No grades available\n");
         return;
     }
     
-    /* Affichage du nombre de notes */
-    printf("      Grades (%d): ", grades.int_nb_grades);
+    /* Display the number of grades */
+    printf("  |    Grades (%d): ", grades.int_nb_grades);
     
-    /* Affichage de chaque note séparée par une virgule */
+    /* Display each grade separated by a comma */
     for (i = 0; i < grades.int_nb_grades; i++)
     {
         printf("%.2f", grades.tab_grades[i]);
         
-        /* Ajouter une virgule sauf pour la dernière note */
+        /* Add a comma except for the last grade */
         if (i < grades.int_nb_grades - 1)
         {
             printf("; ");
@@ -49,41 +49,40 @@ void show_grades(Grades grades)
 
 /*!
  * \fn void show_course(Course course)
- * \brief Affiche les informations complètes d'un cours
- * \param course Structure Course à afficher
+ * \brief Displays complete information of a course
+ * \param course Course structure to display
  */
 void show_course(Course course)
 {
-    printf("    - %s (Coef: %.2f, Avg: %.2f, %d grades)\n",
+    printf("  |  - %s (Coef: %.2f, Avg: %.2f)\n",
            course.char_course_name,
            course.float_coef,
-           course.float_average,
-           course.grades.int_nb_grades);
+           course.float_average);
     
-    /* Affichage de toutes les notes du cours */
+    /* Display all grades of the course */
     show_grades(course.grades);
 }
 
 
 /*!
  * \fn void show_student(Student student)
- * \brief Affiche les informations complètes d'un étudiant
- * \param student Structure Student à afficher
+ * \brief Displays complete information of a student
+ * \param student Student structure to display
  */
 void show_student(Student student)
 {
     int i;
-    /* Affichage des informations de base de l'étudiant */
+    /* Display student's basic information */
     show_student_info(student);
     
-    /* Vérification s'il y a des cours */
+    /* Check if there are any courses */
     if (student.int_nb_courses == 0)
     {
         printf("  No courses enrolled\n");
         return;
     }
     
-    /* Affichage de tous les cours de l'étudiant */
+    /* Display all student's courses */
     printf("\n  Courses Details:\n");
     for (i = 0; i < student.int_nb_courses; i++)
     {
@@ -94,7 +93,7 @@ void show_student(Student student)
 
 void show_student_info(Student student)
 {
-    /* Affichage des informations de base de l'étudiant */
+    /* Display student's basic information */
     printf("\n  ========================================\n");
     printf("  Student ID: %d\n", student.int_id);
     printf("  Name: %s %s\n", student.char_first_name, student.char_last_name);
@@ -106,14 +105,14 @@ void show_student_info(Student student)
 
 /*!
  * \fn void show_prom(Prom prom)
- * \brief Affiche les informations complètes d'une promotion
- * \param prom Structure Prom à afficher
+ * \brief Displays complete information of a cohort
+ * \param prom Prom structure to display
  */
 void show_prom(Prom prom)
 {
     int i;
     
-    /* Affichage de l'en-tête de la promotion */
+    /* Display cohort header */
     printf("\n");
     printf("===============================================\n");
     printf("          PROMOTION INFORMATION                \n");
@@ -121,7 +120,7 @@ void show_prom(Prom prom)
     printf("Total Students: %d\n", prom.int_nb_students);
     printf("===============================================\n");
     
-    /* Vérification s'il y a des étudiants */
+    /* Check if there are any students */
     if (prom.int_nb_students == 0)
     {
         printf("\nNo students in this promotion\n");
@@ -129,14 +128,14 @@ void show_prom(Prom prom)
         return;
     }
     
-    /* Affichage de chaque étudiant de la promotion */
+    /* Display each student in the cohort */
     for (i = 0; i < prom.int_nb_students; i++)
     {
         printf("\n[Student %d/%d]", i + 1, prom.int_nb_students);
         show_student(prom.student_students[i]);
     }
     
-    /* Affichage du pied de page */
+    /* Display footer */
     printf("\n");
     printf("===============================================\n");
     printf("          END OF PROMOTION DATA                \n");
@@ -146,20 +145,20 @@ void show_prom(Prom prom)
 
 /*!
  * \fn void show_best(Prom prom, int n)
- * \brief Affiche les n meilleurs étudiants d'une promotion
- * \param prom Structure Prom à afficher
- * \param n Nombre d'étudiants à afficher
+ * \brief Displays the n best students of a cohort
+ * \param prom Prom structure to display
+ * \param n Number of students to display
  */
 void show_best(Student* students, int n){
     int i;
     
-    /* Affichage de l'en-tête des meilleurs étudiants */
+    /* Display top students header */
     printf("\n");
     printf("===============================================\n");
-    printf("          TOP %d STUDENTS BY PROMOTION         \n", n);
+    printf("          TOP %d STUDENTS BY AVERAGE         \n", n);
     printf("===============================================\n");
     
-    /* Vérification s'il y a des étudiants */
+    /* Check if there are any students */
     if (n == 0)
     {
         printf("\nNo students \n");
@@ -167,14 +166,14 @@ void show_best(Student* students, int n){
         return;
     }
     
-    /* Affichage des n meilleurs étudiants */
+    /* Display the n best students */
     for (i = 0; i < n; i++)
     {
         printf("\n[Top Student %d/%d]", i + 1, n);
         show_student_info(students[i]);
     }
     
-    /* Affichage du pied de page */
+    /* Display footer */
     printf("\n");
     printf("===============================================\n");
     printf("          END OF TOP STUDENTS DATA             \n");

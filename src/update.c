@@ -2,11 +2,11 @@
  * \file update.c
  * \author Akhatar Abdelhamid <abdelhamid.akhatar@etu.cyu.fr>
  * \version 1.0
- * \date 2 novembre 2025
- * \brief Module de mise à jour des moyennes
+ * \date November 2, 2025
+ * \brief Average update module
  * 
- * Ce fichier contient l'implémentation des fonctions de mise à jour 
- * des moyennes pour les matières et les étudiants.
+ * This file contains the implementation of functions for updating
+ * averages for courses and students.
  */
 
 #include "update.h"
@@ -14,8 +14,8 @@
 
 /*!
  * \fn void update_course_average(Prom* prom)
- * \brief Met à jour les moyennes de toutes les matières de tous les étudiants
- * \param prom Pointeur vers la structure Prom contenant tous les étudiants
+ * \brief Updates the averages of all courses for all students
+ * \param prom Pointer to the Prom structure containing all students
  */
 void update_course_average(Prom* prom) 
 {
@@ -26,42 +26,42 @@ void update_course_average(Prom* prom)
     Course* course;
     float sum_grades;
     
-    /* Vérification des paramètres d'entrée */
+    /* Check input parameters */
     if (prom == NULL || prom->student_students == NULL || prom->int_nb_students <= 0) 
     {
         return;
     }
     
-    /* Parcours de tous les étudiants de la promotion */
+    /* Loop through all students in the promotion */
     for (i = 0; i < prom->int_nb_students; i++) 
     {
         student = &prom->student_students[i];
         
-        /* Vérification que l'étudiant et ses matières sont valides */
+        /* Check that the student and their courses are valid */
         if (student != NULL && student->course_courses != NULL && student->int_nb_courses > 0) 
         {
-            /* Parcours de toutes les matières de l'étudiant */
+            /* Loop through all courses of the student */
             for (j = 0; j < student->int_nb_courses; j++) 
             {
                 course = &student->course_courses[j];
                 
-                /* Vérification que la matière contient des notes */
+                /* Check that the course contains grades */
                 if (course->grades.tab_grades != NULL && course->grades.int_nb_grades > 0) 
                 {
                     sum_grades = 0.0f;
                     
-                    /* Calcul de la somme de toutes les notes */
+                    /* Calculate the sum of all grades */
                     for (k = 0; k < course->grades.int_nb_grades; k++) 
                     {
                         sum_grades += course->grades.tab_grades[k];
                     }
                     
-                    /* Calcul de la moyenne de la matière */
+                    /* Calculate the course average */
                     course->float_average = sum_grades / course->grades.int_nb_grades;
                 } 
                 else 
                 {
-                    /* Pas de notes : moyenne à 0 */
+                    /* No grades: set average to 0 */
                     course->float_average = 0.0f;
                 }
             }
@@ -72,8 +72,8 @@ void update_course_average(Prom* prom)
 
 /*!
  * \fn void update_student_average(Prom* prom)
- * \brief Met à jour les moyennes générales de tous les étudiants
- * \param prom Pointeur vers la structure Prom contenant tous les étudiants
+ * \brief Updates the overall averages of all students
+ * \param prom Pointer to the Prom structure containing all students
  */
 void update_student_average(Prom* prom)  
 {
@@ -83,39 +83,39 @@ void update_student_average(Prom* prom)
     float sum_averages;
     float sum_coefs;
     
-    /* Vérification des paramètres d'entrée */
+    /* Check input parameters */
     if (prom == NULL || prom->student_students == NULL || prom->int_nb_students <= 0) 
     {
         return;
     }
     
-    /* Parcours de tous les étudiants de la promotion */
+    /* Loop through all students in the promotion */
     for (i = 0; i < prom->int_nb_students; i++) 
     {
         student = &prom->student_students[i];
         
-        /* Vérification que l'étudiant et ses matières sont valides */
+        /* Check that the student and their courses are valid */
         if (student != NULL && student->course_courses != NULL && student->int_nb_courses > 0) 
         {
             sum_averages = 0.0f;
             sum_coefs = 0.0f;
             
-            /* Calcul de la somme pondérée des moyennes de matières */
+            /* Calculate the weighted sum of course averages */
             for (j = 0; j < student->int_nb_courses; j++) 
             {
-                /* Somme des moyennes multipliées par leurs coefficients */
+                /* Sum of averages multiplied by their coefficients */
                 sum_averages += student->course_courses[j].float_average * student->course_courses[j].float_coef;
                 
-                /* Somme des coefficients */
+                /* Sum of coefficients */
                 sum_coefs += student->course_courses[j].float_coef;
             }
             
-            /* Calcul de la moyenne générale pondérée */
+            /* Calculate the weighted overall average */
             student->float_average = sum_averages / sum_coefs;
         } 
         else 
-        {
-            /* Pas de matières : moyenne à 0 */
+{
+            /* No courses: set average to 0 */
             student->float_average = 0.0f;
         }
     }
