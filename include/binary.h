@@ -12,8 +12,7 @@
 #ifndef BINARY_H
 #define BINARY_H
 
-#include "structures.h"
-#include <stdio.h>
+#include "init.h"
 
 /*!
  * \fn int save_prom_binary(const char* str_filename, Prom* prom)

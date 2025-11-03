@@ -15,6 +15,7 @@
 #include "saveData.h"
 #include "binary.h"
 #include "show.h"
+#include "tri.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -65,9 +66,20 @@ int main(int argc, char** argv)
     /* Fermeture du fichier */
     fclose(file);
     
+    /* Tri des étudiants par moyenne décroissante */
+    printf("Sorting students by average...\n");
+    trier_etudiants_par_moyenne(&prom);
+
     /* Affichage de la promotion */
     printf("Displaying promotion information...\n");
     show_prom(prom);
+    
+    /* Affichage des 3 meilleurs étudiants en Mathématiques */
+    trier_etudiants_par_matiere(&prom, "Mathematiques");
+
+    /* Affichage des top 10 étudiants */    
+    printf("Displaying top 10 students by average...\n");
+    show_best(prom.student_students, 10);
 
     /* Enregistrement de la promotion dans le fichier binaire */
     printf("Saving promotion to binary file...\n");
@@ -77,14 +89,6 @@ int main(int argc, char** argv)
     } else {
         printf("Promotion saved successfully to binary file: promotion.bin\n");
     }
-    
-
-    /* Libération de toute la mémoire allouée */
-    printf("Freeing memory...\n");
-    destroy_prom(&prom);
-
-    /* Lecture de la promotion depuis le fichier binaire */
-    prom = load_prom_binary("promotion.bin");
 
     /* Libération de toute la mémoire allouée */
     printf("Freeing memory...\n");

@@ -73,15 +73,8 @@ void show_course(Course course)
 void show_student(Student student)
 {
     int i;
-    
     /* Affichage des informations de base de l'étudiant */
-    printf("\n  ========================================\n");
-    printf("  Student ID: %d\n", student.int_id);
-    printf("  Name: %s %s\n", student.char_first_name, student.char_last_name);
-    printf("  Age: %d years old\n", student.int_age);
-    printf("  Overall Average: %.2f\n", student.float_average);
-    printf("  Number of Courses: %d\n", student.int_nb_courses);
-    printf("  ========================================\n");
+    show_student_info(student);
     
     /* Vérification s'il y a des cours */
     if (student.int_nb_courses == 0)
@@ -97,6 +90,18 @@ void show_student(Student student)
         printf("\n  [Course %d/%d]\n", i + 1, student.int_nb_courses);
         show_course(student.course_courses[i]);
     }
+}
+
+void show_student_info(Student student)
+{
+    /* Affichage des informations de base de l'étudiant */
+    printf("\n  ========================================\n");
+    printf("  Student ID: %d\n", student.int_id);
+    printf("  Name: %s %s\n", student.char_first_name, student.char_last_name);
+    printf("  Age: %d years old\n", student.int_age);
+    printf("  Overall Average: %.2f\n", student.float_average);
+    printf("  Number of Courses: %d\n", student.int_nb_courses);
+    printf("  ========================================\n");
 }
 
 /*!
@@ -135,5 +140,43 @@ void show_prom(Prom prom)
     printf("\n");
     printf("===============================================\n");
     printf("          END OF PROMOTION DATA                \n");
+    printf("===============================================\n\n");
+}
+
+
+/*!
+ * \fn void show_best(Prom prom, int n)
+ * \brief Affiche les n meilleurs étudiants d'une promotion
+ * \param prom Structure Prom à afficher
+ * \param n Nombre d'étudiants à afficher
+ */
+void show_best(Student* students, int n){
+    int i;
+    
+    /* Affichage de l'en-tête des meilleurs étudiants */
+    printf("\n");
+    printf("===============================================\n");
+    printf("          TOP %d STUDENTS BY PROMOTION         \n", n);
+    printf("===============================================\n");
+    
+    /* Vérification s'il y a des étudiants */
+    if (n == 0)
+    {
+        printf("\nNo students \n");
+        printf("===============================================\n\n");
+        return;
+    }
+    
+    /* Affichage des n meilleurs étudiants */
+    for (i = 0; i < n; i++)
+    {
+        printf("\n[Top Student %d/%d]", i + 1, n);
+        show_student_info(students[i]);
+    }
+    
+    /* Affichage du pied de page */
+    printf("\n");
+    printf("===============================================\n");
+    printf("          END OF TOP STUDENTS DATA             \n");
     printf("===============================================\n\n");
 }
